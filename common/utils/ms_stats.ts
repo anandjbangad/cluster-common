@@ -26,11 +26,13 @@ export function startMonitoringQueueStats(queueName: string) {
     winston.info("started monitoring RMQ stats")
     setInterval(function () {
         stats.getQueue('/', queueName, function (err, res, data) {
+            console.log("Data is ", data);
             if (err) { throw err; }
             qStats[queueName] = {
                 "messages": data.messages,
                 "messages_ready": data.messages_ready,
-                "deliver_get": data.backing_queue_status.len //data.message_stats.deliver_get
+                //"deliver_get": data.backing_queue_status.len || 0 //data.message_stats.deliver_get
+                "deliver_get": 0
             }
         })
     }, 3000);
